@@ -1,4 +1,5 @@
 import PianoRoll from './pianoroll.js';
+import { selectTool } from './selectTool.js'
 
 class PianoRollDisplay {
   constructor(csvURL) {
@@ -42,8 +43,8 @@ class PianoRollDisplay {
   async generateSVGs() {
     if (!this.data) await this.loadPianoRollData();
     if (!this.data) return;
-    
-    const pianoRollContainer = document.getElementById('pianoRollContainer');
+
+    const pianoRollContainer = document.querySelector('.piano-roll-container');
     pianoRollContainer.innerHTML = '';
     for (let it = 0; it < 20; it++) {
       const start = it * 60;
@@ -58,7 +59,77 @@ class PianoRollDisplay {
   }
 }
 
+// Attach a click event listener to an element with the 'loadCSV' id.
 document.getElementById('loadCSV').addEventListener('click', async () => {
   const csvToSVG = new PianoRollDisplay();
   await csvToSVG.generateSVGs();
+
+  // Initialize event listeners for piano-roll-card elements.
+  initializeCardClickListeners();
 });
+
+
+// Function to initialize the event listeners for piano-roll-card elements
+function initializeCardClickListeners() {
+  const getPianoElem = document.querySelectorAll('.piano-roll-card');
+  getPianoElem.forEach((elem) => {
+    elem.addEventListener('click', () => {
+      handlePianoRollCardClick(elem);
+    });
+  });
+}
+
+
+// Function to handle the click event on a piano-roll-card element
+function handlePianoRollCardClick(elem) {
+
+// Helper function to check if the element has a specific class.
+  const isClassAdded = (elemsClass) => elem.classList.contains(elemsClass);
+
+  const getPianoRollCardClicked = document.querySelector('.piano-roll-card-clicked ');
+
+  if (isClassAdded('piano-roll-card-clicked')) {
+    elem.classList.remove('piano-roll-card-clicked');
+    elem.classList.add('piano-roll-card');
+
+    if (getPianoRollCardClicked) {
+      getPianoRollCardClicked.classList.add('piano-roll-card-clicked');
+      selectTool();
+    }
+  } else {
+    if (isClassAdded('piano-roll-card-clicked')) {
+      elem.classList.remove('piano-roll-card-clicked');
+    } else {
+      elem.classList.add('piano-roll-card-clicked');
+
+      // Iterate through all 'piano-roll-card' elements.
+
+      const getPianoCard = document.querySelectorAll('.piano-roll-card');
+
+      getPianoCard.forEach((element) => {
+        if (isClassAdded('piano-roll-card-clicked')) {
+          element.classList.remove('piano-roll-card--isActive');
+          element.classList.add('piano-roll-card--isActive');
+        } else {
+          element.classList.remove('piano-roll-card--isActive');
+          element.classList.remove('piano-roll-card');
+        }
+      });
+
+      // Remove specific classes to reset the element state.
+      elem.classList.remove('piano-roll-card--isActive');
+      elem.classList.remove('piano-roll-card');
+    }
+
+    if (getPianoRollCardClicked) {
+      getPianoRollCardClicked.classList.remove('piano-roll-card-clicked');
+      elem.classList.add('piano-roll-card');
+
+      // Check if a selection tool already exists and remove it.
+      const existingCreateElem = document.querySelector('.select-area');
+      if (existingCreateElem) {
+        existingCreateElem.remove();
+      }
+    }
+  }
+}

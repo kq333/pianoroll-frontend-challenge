@@ -126,6 +126,7 @@ export default class PianoRoll {
       }
       line.setAttribute('stroke-width', `${line_width}`);
       line.setAttribute('stroke', 'black');
+      line.classList = 'line'
       this.svgElement.appendChild(line);
     }
   }
