@@ -1,3 +1,3 @@
 # PianoRoll Frontend Task
 
-[DEMO](https://6543d54ffcf5f215fb4a4180--clinquant-choux-2e8afb.netlify.app)
+[DEMO](https://6544cb4520f77c0da178fa7f--zippy-cassata-54cd99.netlify.app)
