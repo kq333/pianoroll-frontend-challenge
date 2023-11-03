@@ -108,7 +108,6 @@ function handlePianoRollCardClick(elem) {
 
       getPianoCard.forEach((element) => {
         if (isClassAdded('piano-roll-card-clicked')) {
-          element.classList.remove('piano-roll-card--isActive');
           element.classList.add('piano-roll-card--isActive');
         } else {
           element.classList.remove('piano-roll-card--isActive');
